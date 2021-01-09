@@ -7,6 +7,27 @@
 </head>
 <body>
   <h1>オセロゲーム -CANVAS-</h1>
-  <canvas id="canvas" style="background-color: black;"></canvas>
+  <canvas width="400" height="400" id="canvas" style="background-color: black;"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    // const ctx = canvas.getContext("2d");
+
+    // ctx.fillStyle = "orange";
+    // ctx.fillRect(100, 100, 50, 50);
+
+    // fillRectとfor文を使ってたくさんのカラフルな四角形をランダムに描画する
+    function getRandomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    for(let i = 0; i < 50; i ++) {
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(Math.floor(Math.random() * 400),Math.floor(Math.random() * 400),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100));
+    }
+  </script>
 </body>
 </html>
