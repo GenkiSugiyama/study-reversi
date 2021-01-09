@@ -7,26 +7,48 @@
 </head>
 <body>
   <h1>オセロゲーム -CANVAS-</h1>
-  <canvas width="400" height="400" id="canvas" style="background-color: black;"></canvas>
+  <canvas width="400" height="400" id="canvas" style="background-color: green;"></canvas>
   <script>
     const canvas = document.getElementById('canvas');
-    // const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
     // ctx.fillStyle = "orange";
     // ctx.fillRect(100, 100, 50, 50);
 
     // fillRectとfor文を使ってたくさんのカラフルな四角形をランダムに描画する
-    function getRandomColor() {
-      const r = Math.floor(Math.random() * 256);
-      const b = Math.floor(Math.random() * 256);
-      const g = Math.floor(Math.random() * 256);
-      return `rgb(${r}, ${g}, ${b})`;
+    // function getRandomColor() {
+    //   const r = Math.floor(Math.random() * 256);
+    //   const b = Math.floor(Math.random() * 256);
+    //   const g = Math.floor(Math.random() * 256);
+    //   return `rgb(${r}, ${g}, ${b})`;
+    // }
+
+    // for(let i = 0; i < 50; i ++) {
+    //   const ctx = canvas.getContext("2d");
+    //   ctx.fillStyle = getRandomColor();
+    // ↓は値に直接Math.floorではなくて一度変数に格納or座標・サイズを定めるメソッドを作ってその値を入れるべき
+    //   ctx.fillRect(Math.floor(Math.random() * 400),Math.floor(Math.random() * 400),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100));
+    // }
+
+    // オセロの緑の盤面に黒のラインを引いていく
+    // 横線の描画
+    for(let i = 1; i < 8; i++){
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, 50 * i);
+      ctx.lineTo(400, 50 * i);
+      ctx.closePath();
+      ctx.stroke();
     }
 
-    for(let i = 0; i < 50; i ++) {
-      const ctx = canvas.getContext("2d");
-      ctx.fillStyle = getRandomColor();
-      ctx.fillRect(Math.floor(Math.random() * 400),Math.floor(Math.random() * 400),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100));
+    // 縦線の描画
+    for(let i = 1; i < 8; i++){
+      ctx.lineWidth = 1;
+      ctx.beginPath(); // 経路の開始
+      ctx.moveTo(50 * i, 0); // 描画開始地点
+      ctx.lineTo(50 * i, 400); // 描画終了地点
+      ctx.closePath();// 経路の終了
+      ctx.stroke();
     }
   </script>
 </body>
