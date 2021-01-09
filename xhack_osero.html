@@ -76,6 +76,22 @@
       drawStone(4, 4, "white");
     }
 
+    // canvas上クリックで石を配置できるようにする
+
+    // ブラウザ全体ではなくcanvas上での位置を取得する
+    let currentPlayer = "white";
+    canvas.onclick = (e) => {
+      var rect = e.target.getBoundingClientRect();
+      mouseX = e.clientX - Math.floor(rect.left);
+      mouseY = e.clientY - Math.floor(rect.top);
+
+      // drawStone関数に与える位置の数値はクリック位置そのままではなく、drawStone関数のarc()内で行っている計算の逆を行う必要あり
+      const posX = Math.round((mouseX -25) / 50);
+      const posY = Math.round((mouseY -25) / 50);
+      console.log({ posX, posY });
+      drawStone(posX, posY, currentPlayer);
+      currentPlayer = currentPlayer === "white" ? "black" : "white";
+    }
   </script>
 </body>
 </html>
