@@ -30,25 +30,51 @@
     //   ctx.fillRect(Math.floor(Math.random() * 400),Math.floor(Math.random() * 400),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100));
     // }
 
+    // パッと見何かわからない数値は分かりやすい名前の定数・変数に格納する
+    const FIELDWIDTH = 400;
+    const FIELDHEIGHT = 400;
+    const BLOCK_SIZE = FIELDWIDTH / 8;
     // オセロの緑の盤面に黒のラインを引いていく
-    // 横線の描画
-    for(let i = 1; i < 8; i++){
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, 50 * i);
-      ctx.lineTo(400, 50 * i);
-      ctx.closePath();
-      ctx.stroke();
+    drawReversiFieldLine();
+    function drawReversiFieldLine() {
+      // 横線の描画
+      for(let i = 1; i < 8; i++){
+
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, BLOCK_SIZE * i);
+        ctx.lineTo(FIELDHEIGHT, BLOCK_SIZE * i);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      // 縦線の描画
+      for(let i = 1; i < 8; i++){
+        ctx.lineWidth = 1;
+        ctx.beginPath(); // 経路の開始
+        ctx.moveTo(BLOCK_SIZE * i, 0); // 描画開始地点
+        ctx.lineTo(BLOCK_SIZE * i, FIELDWIDTH); // 描画終了地点
+        ctx.closePath();// 経路の終了
+        ctx.stroke();
+      }
     }
 
-    // 縦線の描画
-    for(let i = 1; i < 8; i++){
-      ctx.lineWidth = 1;
-      ctx.beginPath(); // 経路の開始
-      ctx.moveTo(50 * i, 0); // 描画開始地点
-      ctx.lineTo(50 * i, 400); // 描画終了地点
-      ctx.closePath();// 経路の終了
-      ctx.stroke();
+    // 石を置く処理
+
+    // 初期石の配置
+    gameStart();
+    function gameStart() {
+      drawStone(3, 3, "white");
+    drawStone(3, 4, "black");
+    drawStone(4, 3, "black");
+    drawStone(4, 4, "white");
+    }
+
+    function drawStone(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(25 + x * 50, 25 + y * 50, 22, 0, 2 * Math.PI);
+      ctx.fill();
     }
   </script>
 </body>
