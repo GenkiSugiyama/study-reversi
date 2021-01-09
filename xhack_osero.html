@@ -60,22 +60,22 @@
     }
 
     // 石を置く処理
-
-    // 初期石の配置
-    gameStart();
-    function gameStart() {
-      drawStone(3, 3, "white");
-    drawStone(3, 4, "black");
-    drawStone(4, 3, "black");
-    drawStone(4, 4, "white");
-    }
-
     function drawStone(x, y, color) {
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(25 + x * 50, 25 + y * 50, 22, 0, 2 * Math.PI);
       ctx.fill();
     }
+
+    // 初期石の配置
+    gameStart();
+    function gameStart() {
+      drawStone(3, 3, "white");
+      drawStone(3, 4, "black");
+      drawStone(4, 3, "black");
+      drawStone(4, 4, "white");
+    }
+
   </script>
 </body>
 </html>
