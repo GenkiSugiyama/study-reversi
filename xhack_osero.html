@@ -34,6 +34,123 @@
     const FIELDWIDTH = 400;
     const FIELDHEIGHT = 400;
     const BLOCK_SIZE = FIELDWIDTH / 8;
+    const WHITE = 1;
+    const BLACK = 2;
+
+    // クリック位置が石を置けるかの判定
+    // オセロが石を置ける条件
+    // 1.隣接したブロックに自分の色ではない石が置いてあるかを調べる
+    // 2.石がなければそこで調べるのをやめる
+
+    // 盤面の状態を定義する
+    // 0：何も置かれて無い
+    // 1：白石が置かれている
+    // 2：黒石が置かれている
+    // このbanmenの状態をcanvas上に反映したい
+    const banmen = [
+      [0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0],
+      [0,0,1,2,1,0,0,0],
+      [0,0,2,1,2,0,0,0],
+      [0,0,2,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0],
+    ]
+
+    // banmenデータから石を描画
+    banmen.refresh = () => {
+      for(let x = 0; x < 8; x++){
+        for(let y = 0; y < 8; y++){
+          let color = banmen[y][x] === WHITE ? "white" : "black";
+          if(banmen[y][x] !== 0) {
+            drawStone(x, y, color);
+          }
+        }
+      }
+    }
+    banmen.refresh();
+
+    // 置いた石を中心に全8方向をチェックするための方向オブジェクトを定義
+    const directions = [
+      { name: "上方向", x: 0, y: -1 }, //上方向
+      { name: "下方向", x: 0, y: 1 }, // 下方向
+      { name: "左方向", x: -1, y:0 }, // 左方向
+      { name: "右方向", x: 1, y: 0 }, // 右方向
+      { name: "左上方向", x: -1, y: -1 }, //左上方向
+      { name: "左下方向", x: -1, y: 1 }, // 左下方向
+      { name: "右下方向", x: 1, y:  1}, // 右下方向
+      { name: "右上方向", x: 1, y: -1 }, // 右上方向
+    ]
+
+    class Stone {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+      }
+    }
+
+    // 石がその位置に置けるかを調べる関数
+    // let stones = [];
+    function canPutStone(originX, originY, color) {
+      let canReverse = false; //ひっくり返せるかどうかのフラグ
+      const reverseStoneColor = color === WHITE ? BLACK : WHITE; //相手の石の色
+      // 石を置きたい場所から8方向それぞれについて他の石がどのように置かれているか調べる
+      directions.forEach((direction) => {
+        let x = originX;
+        let y = originY;
+        const stones = []; 
+        // stones.push(new Stone(originX, originY, color)) //今おいた石のインスタンス
+        stones.push({x, y, color});
+
+        console.log('方向：' + direction.name);
+        for(let i = 0; i < 7; i++){
+          x = x + direction.x;
+          y = y + direction.y;
+          if(x > 7 || x < 0 || y > 7 || y < 0){
+            break;
+          }
+          if(banmen[y][x] === 0) {
+            break;
+          }
+          stones.push({x, y, color}); // 既に置かれている石の情報でインスタンスを作りstones配列に追加
+          // 先頭以外で置いた石と同じ色があればループ処理を抜ける
+          if(banmen[y][x] === color) {
+            break;
+          }
+        }
+        // 配列の長さが1以下の物は処理しない
+        if(stones.length <= 1) {
+          return;
+        }
+
+        // 白石が黒石に挟まれている or 黒石が白石に挟まれているかのチェック
+        // stones配列の中身をチェックする、ひっくり返せるならtrue、そうでなければfalseを返す
+
+        // 隣接する石の色が相手の石の色でなければひっくり返せない
+        console.log(stones);
+        console.log(stones[1].color, color);
+        if (stones[1].color === color) {
+          // console.log('ひっくり返せない');
+          return canReverse;
+        }
+
+        // 配列の末尾が置いた石と同じなら配列内の石の色はひっくり返せる
+        console.log(stones.slice(-1)[0]);
+        const lastIndex = stones.length - 1;
+        if(stones[lastIndex].color === color) {
+          canReverse = true;
+          console.log(direction.name + 'にはひっくり返せる');
+          return canReverse
+        }
+
+        // 実際に、ひっくり返せる石をひっくり返す
+
+      });
+
+    }
+
     // オセロの緑の盤面に黒のラインを引いていく
     drawReversiFieldLine();
     function drawReversiFieldLine() {
@@ -68,13 +185,13 @@
     }
 
     // 初期石の配置
-    gameStart();
-    function gameStart() {
-      drawStone(3, 3, "white");
-      drawStone(3, 4, "black");
-      drawStone(4, 3, "black");
-      drawStone(4, 4, "white");
-    }
+    // gameStart();
+    // function gameStart() {
+    //   drawStone(3, 3, "black");
+    //   drawStone(3, 4, "white");
+    //   drawStone(4, 3, "white");
+    //   drawStone(4, 4, "black");
+    // }
 
     // canvas上クリックで石を配置できるようにする
 
